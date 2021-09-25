@@ -1,0 +1,19 @@
+{
+  "name": "running-shoe-mileage-tracker",
+  "version": "1.0.0",
+  "description": "app to keep track of mileage of running shoes",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "build": "cd client && npm install && npm run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "engines": {
+    "node": "13.8.0"
+  }
+}
