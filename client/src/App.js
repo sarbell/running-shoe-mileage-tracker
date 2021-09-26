@@ -1,23 +1,28 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
+import ShoeRouter from './components/ShoeRouter.js'
+import {BrowserRouter as Router} from 'react-router-dom'
 
 function App() {
-  const [data, setData] = React.useState(null);
-
-  React.useEffect(() => {
-    fetch("/api")
-      .then((res) => res.json())
-      .then((data) => setData(data.message));
-  }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>{!data ? "Loading..." : data}</p>
-      </header>
-    </div>
+    <>
+      <header></header>
+      <main>
+          <Router>
+            <ShoeRouter />
+          </Router>
+      </main>
+      <footer className="footer has-background-grey-light has-text-light">
+        <div className="content has-text-centered">
+          <p>
+            <strong>Bulma</strong> by <a href="https://jgthms.com">Jeremy Thomas</a>. The source code is licensed
+            <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
+            is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.
+          </p>
+        </div>
+      </footer>
+    </>
   );
 }
 
