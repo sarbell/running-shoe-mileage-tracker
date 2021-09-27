@@ -4,15 +4,13 @@ const Schema = mongoose.Schema;
 const shoeSchema = new Schema({
   first_date: {
     type: Date, 
-    required: true, 
   },
   brand: {
     type: String, 
     required: true, 
   },
   model: {
-    type: String, 
-    required: true, 
+    type: String,  
   },
   size: {
     type: String, 

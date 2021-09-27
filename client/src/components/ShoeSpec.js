@@ -9,11 +9,14 @@ import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa'
 
 function ShoeSpec(){
     const history = useHistory()
-    let {shoes} = useContext(ShoeContext)
+    let {shoes, authenticated} = useContext(ShoeContext)
     let {sid} = useParams()
     let s = sid ? shoes.find(s => s.id === sid) : {}
 
-
+    if(!authenticated){
+        document.location = '/login'
+        return <></>
+      } 
 
     let deleteShoe = () => {
         if(window.confirm('Are you sure you want to delete this shoe?')){

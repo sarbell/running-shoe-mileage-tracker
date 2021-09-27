@@ -18,15 +18,15 @@ function ValidationMessage({message}){
 }
 
 const validationSchema = yup.object({
-    first_date: yup.date().required(),
-    brand: yup.string().required(),
-    model: yup.string().required(),
+    first_date: yup.date(),
+    brand: yup.string().required("shoe brand is required"),
+    model: yup.string(),
     size: yup.string().required(),
-    type: yup.mixed().oneOf(['road', 'trail', 'racing']).required(),
+    type: yup.mixed().oneOf(['road', 'trail', 'racing']).required("Please select type of running shoe"),
     nickname: yup.string(),
-    status: yup.boolean().required(),
+    status: yup.boolean().required("Please indicate if this shoe is in your current rotation"),
     notes: yup.string(),
-    miles: yup.number()
+    miles: yup.number().min(0)
 })
 
 toast.configure()
@@ -137,7 +137,7 @@ function AddShoeForm(){
                         </div>
 
                         <div className="field">
-                            <label htmlFor="status" className="label">Is this is current shoe?</label>
+                            <label htmlFor="status" className="label">Are you using this shoe right now?</label>
                             <div className="control">
                                 <select className={`input ${errors.status ? 'is-invalid' : ''}`} id="status" name="status" value={values.status} onChange={handleChange}> 
                                     <option value="">Not selected</option>

@@ -1,10 +1,10 @@
 const express = require('express');
 const User = require('../models/user');
 const Shoe = require('../models/shoe')
+const Miles = require('../models/miles')
 const router = express.Router();
 const passport = require('passport')
 const jwt = require('jsonwebtoken');
-const { isValidObjectId } = require('mongoose');
 const APP_SECRET = "my_secret_for_this_app_which_needs_to_change_later"
 
 
@@ -32,9 +32,6 @@ function getCurrentUser(req){
       return null
     }
   }
-
-
-
 
 router.get("/api", (req, res) => {
     res.json({ message: "Hello from server! This is a test" });
@@ -64,35 +61,6 @@ router.post('/api/register',  (req, res) => {
 
 })
 
-// get all users
-router.get('/api/users', (req, res) => {
-    try{
-        const users =  User.find({})
-        return res.json({
-            users
-        })
-    } catch(error){
-        return res.status(500).json({
-            message: 'Internal server error'
-        })
-    }
-})
-
-// Get one user
-router.get('/api/users/:id', (req, res) => {
-    try{
-        User.find({_id: req.params.id}).select().exec((error, user) => {
-            res.write(JSON.stringify(user))
-            res.end()
-        })
-    } catch(error){
-        res.json({
-            success: false, 
-            message: "Couldn't fetch user"
-        })
-        res.end()
-    }
-})
 
 // Login in user
 router.post('/api/login', (req, res, next) => {
@@ -116,7 +84,7 @@ router.post('/api/login', (req, res, next) => {
 
 // ------------ SHOES ------------
 // Get all shoes for a user
-router.get('/api/shoe', (req, res) => {
+router.get('/api/shoe', requireLogIn, (req, res) => {
     try{
         user = getCurrentUser(req)
         id = user._id
@@ -135,9 +103,8 @@ router.get('/api/shoe', (req, res) => {
     }
 })
 
-
 // Get one shoe
-router.get('/api/shoe/:id', (req, res) => {
+router.get('/api/shoe/:id', requireLogIn, (req, res) => {
         try{
             Shoe.find({_id: req.params.id}).select().exec((err, shoe) => {
                 res.write(JSON.stringify(shoe))
@@ -152,9 +119,8 @@ router.get('/api/shoe/:id', (req, res) => {
         }
 })
 
-
 // add a shoe
-router.post('/api/shoe/add',  (req, res) => {
+router.post('/api/shoe/add', requireLogIn,  (req, res) => {
     let shoe = new Shoe(req.body) 
     shoe.added_at = new Date()
     shoe.updated_at = new Date()
@@ -170,7 +136,7 @@ router.post('/api/shoe/add',  (req, res) => {
 })
 
 // Update a shoe
-router.put('/api/shoe/update/:id',  (req, res) => {
+router.put('/api/shoe/update/:id', requireLogIn,  (req, res) => {
     Shoe.findOne({_id: req.params.id}).select().exec((err, shoe) => {
         if(err){
             console.log(err)
@@ -193,7 +159,22 @@ router.put('/api/shoe/update/:id',  (req, res) => {
 
 // Add miles
 // api/shoe/addmiles/
-router.put('/api/shoe/addmiles/:id',  (req, res) => {
+router.post('/api/shoe/addmiles/:id', requireLogIn, (req, res) => {
+    let updateMiles = new Miles(req.body) 
+    updateMiles.shoe_ran_in = req.params.id
+    updateMiles.save(err => {
+        if(err){
+            res.json({success: false, message: `Adding miles failed: ${err}`})
+            res.end()
+        }else{
+            res.end()
+        }
+    })
+})
+
+// Add new miles to shoe object
+// /api/shoe/updateMiles/${shoe.id}
+router.put('/api/shoe/updateMiles/:id', requireLogIn, (req, res) => {
     Shoe.findOne({_id: req.params.id}).select().exec((err, shoe) => {
         if(err){
             console.log(err)
@@ -201,7 +182,6 @@ router.put('/api/shoe/addmiles/:id',  (req, res) => {
             res.end()
         }else{
             Object.assign(shoe, req.body)
-            shoe.updated_at = new Date()
             shoe.save(err => {
                 if(err){
                     res.json({success: false, message: `Unable to update shoe ${err}`})
@@ -214,8 +194,27 @@ router.put('/api/shoe/addmiles/:id',  (req, res) => {
     })
 })
 
+// get mileEntries
+router.get('/api/mileEntries/:id', requireLogIn, (req, res) => {
+    try{
+        id = req.params.id
+        Miles.find({shoe_ran_in: id}).select().exec((err, miles) => {
+            if(err){
+                res.json({success: false, message: "Failed to get logs."})
+            }else{
+                res.write(JSON.stringify(miles))
+                res.end()
+            }
+        })
+    } catch (error){
+        res.json({message: "Need to login to fetch shoe logs."})
+        res.end()
+    }
+})
+
+
 // Delete a shoe
-router.delete('/api/shoe/delete/:id',  (req, res) => {
+router.delete('/api/shoe/delete/:id', requireLogIn, (req, res) => {
     Shoe.findOne({_id: req.params.id}).select().exec((err, shoe) => {
         if(err){
             res.json({success: false, message: "Undable to delete."})

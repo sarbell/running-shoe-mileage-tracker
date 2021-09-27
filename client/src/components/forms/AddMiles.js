@@ -18,15 +18,8 @@ function ValidationMessage({message}){
 }
 
 const validationSchema = yup.object({
-    first_date: yup.date().required(),
-    brand: yup.string().required(),
-    model: yup.string().required(),
-    size: yup.string().required(),
-    type: yup.mixed().oneOf(['road', 'trail', 'racing']).required(),
-    nickname: yup.string(),
-    status: yup.boolean().required(),
-    notes: yup.string(),
-    miles: yup.number()
+    today_miles: yup.number().required('Please enter how many miles you ran.').min(0),
+    day_ran: yup.date().required('Select the day of your run'),
 })
 
 toast.configure()
@@ -38,12 +31,38 @@ function AddMiles(){
     let shoe = sid ? shoes.find(s => s.id === sid) : {}
 
 
+    function addMilesToTotal(values){
+        let value = shoe.miles + values.today_miles
+        value = {"miles": value}
+        fetch(`/api/shoe/updateMiles/${shoe.id}`, {
+            method: 'PUT',
+            headers:{
+                "Content-Type": "application/json"
+            },
+            credentials: 'same-origin',
+            body: JSON.stringify(value)
+        }).then((response) => {
+            if(!response.ok) throw Error('Failed to add miles to shoe')
+            return response.text()
+        }).then(()=> {
+            document.location = '/dashboard'
+
+        }).catch((error) => {
+            console.log(error)
+            document.location = '/dashboard'
+
+        })
+    }
+
     const {handleSubmit, handleChange, values, errors} = useFormik({
-        initialValues: {...shoe},
+        initialValues: {
+            today_miles: '',
+            day_ran: ''
+        },
         validationSchema,
         onSubmit(values){
             fetch(`/api/shoe/addmiles/${shoe.id}`, {
-                method: "PUT",
+                method: "POST",
                 headers:{
                     "Content-Type": "application/json"
                 },
@@ -55,7 +74,7 @@ function AddMiles(){
             }).then(()=> {
                 toast.success('Successfully submitted!', {
                     onClose: () => {
-                        document.location = '/dashboard'
+                        addMilesToTotal(values)
                     },
                     transition: bounce
                 })
@@ -77,20 +96,28 @@ function AddMiles(){
             <div className="columns is-mobile">
                 <div className="column box is-half is-offset-one-quarter">
                     
-                    <h1 className="title is-1 header-text">Add Miles</h1>
-                    <form onSubmit={handleSubmit} className="shoeFormInput">
+                    <h1 className="title is-1 header-text">Add Miles for Your Run with <strong>{shoe.nickname}</strong></h1>
+                    <form onSubmit={handleSubmit} className="shoeAddFormInput">
 
                         <div className="field">
-                            <label htmlFor="miles" className="label">How many miles did you run?</label>
+                            <label htmlFor="today_miles" className="label">How many miles did you run?</label>
                             <div className="control">
-                                <input id="miles" name="miles" className={`input form-control ${errors.miles ? 'is-invalid' : ''}`} type="number" placeholder="" value={values.miles} onChange={handleChange} />
-                                <ValidationMessage message={errors.miles} />
+                                <input id="today_miles" name="today_miles" className={`input form-control ${errors.today_miles ? 'is-invalid' : ''}`} type="number" placeholder="" value={values.today_miles} onChange={handleChange} />
+                                <ValidationMessage message={errors.today_miles} />
+                            </div>
+                        </div>
+
+                        <div className="field">
+                            <label htmlFor="day_ran" className="label">Day of your run</label>
+                            <div className="control">
+                                <input id="day_ran" name="day_ran" className={`input form-control ${errors.day_ran ? 'is-invalid' : ''}`} type="date" value={values.day_ran} onChange={handleChange} />
+                                <ValidationMessage message={errors.day_ran} />
                             </div>
                         </div>
               
                         <div className="field is-grouped">
                             <div className="control">
-                                <button type="submit" className="button is-success">add</button>
+                                <button type="submit" className="button is-success">Add</button>
                                 <button type="button" onClick={()=>document.location = '/dashboard'} className="button is-light" to="/dashboard">Cancel</button>
                             </div>
                         </div>

@@ -1,19 +1,14 @@
-import React, {useContext} from "react";
+import React, {useContext, useState, useEffect} from "react";
 import { useHistory } from 'react-router-dom'
 import { ShoeContext } from './ShoeRouter'
 import ProgressBar from './ProgressBar'
 
 
 function DashboardLayout( ){
-    let {shoes, authenticated} = useContext(ShoeContext)
+    let {shoes} = useContext(ShoeContext)
     const history = useHistory()
-
-    if(!authenticated){
-      document.location = '/login'
-      return <></>
-    } 
+    const [logs, setLogs] = useState()
     
-    // needs to be for the logged in user
     let totalMiles =0 
     if(shoes){
         for(let i = 0; i < shoes.length; i++){
@@ -27,20 +22,41 @@ function DashboardLayout( ){
     let currentDay = new Date();
     let first = currentDay.getDate() - currentDay.getDay()
     let last = first + 6
-    let sunday = new Date(currentDay.setDate(first))
-    let saturday = new Date(currentDay.setDate(last))
-    // console.log(sunday)
-    // console.log(saturday)
-    if(shoes){
-        for(let i = 0; i < shoes.length; i++){
-            console.log(shoes[i].first_date)
-            if(shoes[i].first_date >= sunday && shoes[i].first_date <= saturday){
-              weekSoFar += shoes[i].miles
-              // console.log(weekSoFar)
-            }
-          }
+    let sunday = new Date(currentDay.setDate(first)).toUTCString()
+    let saturday = new Date(currentDay.setDate(last)).toUTCString()
+    currentDay = new Date().toUTCString()
+    console.log(`Current Date:    ${currentDay}`)
+    console.log(`Sunday:          ${sunday}`)
+    console.log(`Saturday:        ${saturday}`)
+
+    function getMileageLogs(shoeId){
+          fetch(`api/mileEntries/${shoeId}`, {
+            method: "GET",
+            headers:{
+              "Content-Type":"application/json"
+            },
+            credentials: 'same-origin',
+          }).then(response => response.json()
+          ).then((data) => {
+            data.map(d => {
+              let runDate = new Date(d.day_ran).toUTCString()
+              console.log(runDate)
+              if(runDate <= sunday && runDate >= saturday){
+                weekSoFar += d.today_miles
+              }
+            })
+            console.log(weekSoFar)
+          }).catch((err) =>{
+            console.log(err)
+          })
     }
-   
+
+
+    if(shoes){
+      for(let i = 0; i < shoes.length; i++){
+        getMileageLogs(shoes[i].id)
+      }
+    }
 
     // Weekly Average
     // math

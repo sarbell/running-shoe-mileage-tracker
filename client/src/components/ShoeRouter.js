@@ -38,6 +38,7 @@ export default function ShoeRouter(){
             .catch(console.error)
         }
     })
+    
 
     return (
         <ShoeContext.Provider value={{shoes, setShoes, authenticated, setAuthenticated}}>
