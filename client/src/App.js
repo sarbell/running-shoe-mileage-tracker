@@ -1,5 +1,5 @@
 import React from "react";
-import "./App.css";
+import "./App.scss";
 import ShoeRouter from './components/ShoeRouter.js'
 import {BrowserRouter as Router} from 'react-router-dom'
 
@@ -13,7 +13,7 @@ function App() {
             <ShoeRouter />
           </Router>
       </main>
-      <footer className="footer has-background-grey-light has-text-light">
+      <footer className="footer has-background-dark has-text-light">
         <div className="content has-text-centered">
           <p>
             <strong>Bulma</strong> by <a href="https://jgthms.com">Jeremy Thomas</a>. The source code is licensed

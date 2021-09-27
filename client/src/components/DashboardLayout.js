@@ -2,6 +2,7 @@ import React, {useContext, useState, useEffect} from "react";
 import { useHistory } from 'react-router-dom'
 import { ShoeContext } from './ShoeRouter'
 import ProgressBar from './ProgressBar'
+import { FaPlusCircle } from 'react-icons/fa'
 
 
 function DashboardLayout( ){
@@ -86,6 +87,7 @@ function DashboardLayout( ){
                 <div className="box has-text-centered">
                     <h3 className="is-size-4">Week so far</h3>
                     <p className="totalMilesOnAppNum">{weekSoFar}</p>
+
                 </div>
               </div>
             
@@ -99,28 +101,12 @@ function DashboardLayout( ){
           </div>
 
           <div className="column">
-                <h3 className="is-size-3">
+                <h3 className="is-size-2 ">
                   Running Shoe Tracker 
-                  <button onClick={() => history.push(`/add/shoe`)} className="add-shoe-btn button is-info is-outline is-pulled-right">Add Shoe</button>
+                  <button onClick={() => history.push(`/add/shoe`)} className="add-shoe-btn button is-info is-pulled-right"> <FaPlusCircle></FaPlusCircle>  Add Shoe</button>
                 </h3>
-                <h4 className="is-size-7">It is reccomended to replace your running shoes after about 300 miles. Green is good, yellow is a reminder that they are getting old. Orange is time to change, and red is stop running in those old shoes!</h4>
+                <h4 className="is-size-5">It is reccomended to replace your running shoes after about 300 miles. Green is good, yellow is a reminder that they are getting old, orange is time to change, and red is stop running in those old shoes!</h4>
               <br></br>
-              {/* <div className="container tabs-container">
-                    <div className="tabs is-boxed">
-                        <ul>
-                            <li className="current">
-                                <a><span>Current</span></a>
-                            </li>
-                            <li className="retired">
-                                <a><span>Retired</span></a>
-                            </li>
-                            <li className="all">
-                                <a><span>All</span></a>
-                            </li>
-                        </ul>
-                    </div>
-              </div> */}
-
               <div className="box container">
                 {progressBars}
               </div>

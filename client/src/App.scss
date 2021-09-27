@@ -1,0 +1,202 @@
+@import url('https://fonts.googleapis.com/css?family=Urbanist:100,200,300,400,500,600,700,800,900');
+
+// Set your brand colors
+$white: whitesmoke;
+$red: #ff6b6b;
+$yellow: #ffe66d;
+$light-blue: #4ecdc4;
+$dark-blue: #1a535c;
+$purple: #4D2BE3;
+$green: hsl(141, 71%, 48%);
+$dark-grey-react: #282c34;
+$prettylightblue: #a3e6de;
+$navbar-background-color: $dark-grey-react;
+
+// Update Bulma's global variables
+$family-sans-serif: 'Urbanist', sans-serif;
+// $grey-dark: $brown;
+// $grey-light: $beige-light;
+$warning: $yellow;
+$primary: $purple;
+$danger: $red;
+$link: $dark-blue;
+$info: $light-blue;
+// $widescreen-enabled: false;
+// $fullhd-enabled: false;
+
+// Update some of Bulma's component variables
+$body-background-color: $white;
+$control-border-width: 2px;
+$input-border-color: transparent;
+$input-shadow: none;
+$menu-item-color: $white;
+$menu-item-active-background-color: $info;
+$menu-label-color: $info;
+
+*{
+  font-family: $family-sans-serif !important;
+}
+
+.App {
+  text-align: center;
+}
+
+
+.hero{
+  background: rgb(255,107,107);
+  background: linear-gradient(40deg, rgba(255,107,107,1) 10%, rgba(255,230,109,1) 100%);  
+}
+.about-line{
+  background: linear-gradient(
+      40deg, #ff6b6b 10%, #ffe66d 100%);
+          border: none;
+          display: block;
+          height: 5px;
+          margin: 1rem 0;
+}
+
+.hero-text-main{
+  font-size: 5rem;
+  font-weight: 700;
+  .thin{
+    font-weight: 300;
+  }
+}
+.header-text{
+  font-weight: 200;
+}
+.login, .register, .shoeForm{
+  background: linear-gradient(
+      40deg, #ff6b6b 10%, #ffe66d 100%);
+          border: none;
+          display: block;
+          min-height: 100vh;
+}
+.loginInput input{
+  border: 1px solid $danger;
+  background: #fafafa9f;
+}
+.registerInput input {
+  border: 1px solid $danger;
+  background: #fafafa9f;
+}
+
+.shoeFormInput input {
+  border: 1px solid $danger;
+  background: #fafafa9f;
+}
+.customlink{
+  cursor: pointer;
+}
+.line{
+  background: linear-gradient(
+      40deg, #ff6b6b 10%, #ffe66d 100%);
+  display: block;
+  height: 2px;
+}
+
+.top-notification-bar{
+  padding: 1rem;
+  margin-top: 1rem;
+  margin-left: 2rem;
+  margin-right:2rem;
+
+  h3{
+      font-size: 1.5rem;
+  }
+}
+.red{
+  background-color: red;
+}
+
+.main-dash{
+  padding-top: 2rem;
+  padding-left: .5rem;
+  padding-right: .5rem;
+  background-color: #fafafa;
+  background: linear-gradient(
+    135deg, #ff6b6b 0%, #ffe66d 100%);
+  min-height: 100vh;
+
+  .side-menu{
+      text-align: center;
+      height: 100vh;
+      background: rgb(255,107,107);
+      background: linear-gradient(40deg, rgba(255,107,107,1) 10%, rgba(255,230,109,1) 100%);  
+      .custom-menu-label{
+          font-weight: 500;
+          padding-top: 5rem;
+      }
+      .menu-list{
+          padding: 2rem;
+      }
+  }
+
+  .graphs{
+    padding-top: 1rem;
+      h3{
+          font-weight: 600;
+          text-transform: uppercase;
+      }
+      .main-content{
+          margin-bottom:2rem;
+      }
+
+      .totalMilesOnAppNum{
+          font-weight: 700;
+          font-size: 6rem;
+          // background: -webkit-linear-gradient(#ffe66d, #ff6b6b);
+          // -webkit-background-clip: text;
+          // -webkit-text-fill-color: transparent;
+          background-color: #ffe66d;
+          background-image: linear-gradient(45deg, #ffe66d, #ff6b6b);
+          background-size: 100%;
+          -webkit-background-clip: text;
+          -moz-background-clip: text;
+          -webkit-text-fill-color: transparent; 
+          -moz-text-fill-color: transparent;
+      }
+      .add-shoe-btn{
+          font-size: 1.2rem;
+      }
+      .tabs-container{
+          margin-top: 1rem;
+      }
+  }
+  .addMilesBtn{
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  .shoeTitle{
+      font-weight: 600;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: $link;
+  }
+
+  .shoeInfoPB{
+      padding-left: .5rem;
+      padding-bottom: .5rem;
+  }
+
+  .progressBar{
+      width: 100%;
+      height: 1.5rem;
+      overflow: hidden;
+      border: none;
+      border-radius: 999px;
+      background: lightgray;
+      .bar{
+          width: 0;
+          height: 1.5rem;
+      }
+  }
+
+  .shoeSpec{
+    p{
+      font-size: 1.3rem;
+    }
+  }
+
+
+}

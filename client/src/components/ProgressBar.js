@@ -1,5 +1,7 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
+import { FaPlusCircle } from 'react-icons/fa'
+
 
 
 function ProgressBar(props){
@@ -21,11 +23,14 @@ function ProgressBar(props){
     return(
         <>
         <div>
-            <h2 className="shoeTitle" onClick={() => history.push(`/shoe/${s.id}`)}>{s.nickname}</h2>
+            <h2 className="shoeTitle" ><span onClick={() => history.push(`/shoe/${s.id}`)}>{s.nickname}</span>
+                <span className="addMilesBtn is-pulled-right" onClick={() => history.push(`/shoe/addmiles/${s.id}`)}><FaPlusCircle></FaPlusCircle>  Miles</span>
+            
+            </h2>
+
             <p > <strong>{s.brand}, {s.model} </strong> -  {s.status ? 'Current Shoe': 'Retired'}
                 <span className="is-pulled-right"><strong>{s.miles} miles</strong></span>
             </p>
-            <button className="button " onClick={() => history.push(`/shoe/addmiles/${s.id}`)}>add miles</button>
 
 
             <div className="progressBar">

@@ -4,6 +4,8 @@ import { ShoeContext } from './ShoeRouter'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa'
+import Nav from './Nav'
+
 
 
 
@@ -44,37 +46,21 @@ function ShoeSpec(){
 
 
     return(
+        <div>
+        <Nav></Nav>
         <div className="columns main-dash is-multiline">
-            <div className="column side-menu is-2">
-                <aside className="menu">
-                    <p className="custom-menu-label is-size-4">
-                        Hello!
-                    </p>    
-                    <ul className="menu-list is-size-5">
-                        <li><Link to="/">Home</Link></li>
-                        <li><Link to="/dashboard">Dashboard</Link></li>
-
-                    </ul>
-                    <p className="custom-menu-label is-size-4">
-                        Account
-                    </p>
-                    <ul className="menu-list is-size-5">
-                        <li><Link to="/logout">Logout</Link></li>
-                    </ul>
-                </aside>
-            </div>
             <br></br>
             <div className="column">
                 <div className="column">
                     <section>
-                        <div className="container box">
+                        <div className="container box shoeSpec">
                             <h1 className="title is-2">{s.nickname}  -  {s.miles} miles</h1>
                             <hr className="line"></hr>
                             <h2 className="subtitle is-3">{s.brand}, {s.model}</h2>
-                            <p>SIZE: {s.size}</p>
-                            <p>CURRENT USE: {s.status ? 'Yes' : 'Retired'}</p>
-                            <p>TYPE: {s.type}</p>
-                            <p>NOTES: {s.notes}</p>
+                            <p><strong>SIZE: </strong>{s.size}</p>
+                            <p><strong>CURRENT USE: </strong>{s.status ? 'Yes' : 'Retired'}</p>
+                            <p><strong>TYPE: </strong>{s.type}</p>
+                            <p><strong>NOTES: </strong>{s.notes}</p>
                             <br></br>
                             <div className="buttons">
                                 <button className="button is-info" onClick={() => history.push(`/shoe/${s.id}/update`)} ><FaPencilAlt className="icon is-small"></FaPencilAlt><span>Edit</span></button>
@@ -84,6 +70,7 @@ function ShoeSpec(){
                     </section>
                 </div>
             </div>
+        </div>
         </div>
 
 

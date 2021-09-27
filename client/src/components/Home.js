@@ -11,10 +11,10 @@ let {authenticated} = useContext(ShoeContext)
             <section className="hero is-large">
                 <div className="hero-body">
                     <div className="container has-text-centered">
-                        <h1 className="title is-1 header-text">
-                            Stop wearing your sole thin.
+                        <h1 className="hero-text-main">
+                            Stop wearing your sole <span className="thin">thin</span>.
                         </h1>
-                        <p className="subtitle">
+                        <p className="subtitle is-3">
                             Tracking your running shoe mileage just became a breeze.
                         </p>
                         

@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import DashboardLayout from "./DashboardLayout";
 import { ShoeContext } from "./ShoeRouter";
-import { Link } from "react-router-dom";
+import Nav from './Nav'
 
 
 
@@ -49,25 +49,9 @@ function Dashboard(){
     }
 
     return (
+        <div>
+        <Nav></Nav>
         <div className="columns main-dash is-multiline">
-            <div className="column side-menu is-2">
-                <aside className="menu">
-                    <p className="custom-menu-label is-size-4">
-                        Hello!
-                    </p>
-                    
-                    <ul className="menu-list is-size-5">
-                        <li><Link to="/">Home</Link></li>
-                        <li><Link to="/dashboard">Dashboard</Link></li>
-                    </ul>
-                    <p className="custom-menu-label is-size-4">
-                        Account
-                    </p>
-                    <ul className="menu-list is-size-5">
-                        <li><Link to="/logout">Logout</Link></li>
-                    </ul>
-                </aside>
-            </div>
             <br></br>
             <div className="column">
                 {notifications} 
@@ -77,6 +61,7 @@ function Dashboard(){
                     </section>
                 </div>
             </div>
+        </div>
         </div>
     )
 }
