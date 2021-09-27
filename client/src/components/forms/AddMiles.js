@@ -18,7 +18,7 @@ function ValidationMessage({message}){
 }
 
 const validationSchema = yup.object({
-    today_miles: yup.number().required('Please enter how many miles you ran.').min(0),
+    today_miles: yup.number().required('Please enter how many miles you run.').min(0),
     day_ran: yup.date().required('Select the day of your run'),
 })
 
