@@ -109,7 +109,7 @@ function Registration(){
                         <div className="field is-grouped">
                             <div className="control">
                             <br></br>
-                                <button type="submit" className="button is-success">Set...Go!</button>
+                                <button type="submit" className="button is-success">Signup</button>
                                 <button type="button" onClick={()=>document.location = '/'} className="button is-light" >Cancel</button>
                             </div>
                         </div>

@@ -1,15 +1,16 @@
-import React, {useContext, useState, useEffect} from "react";
+import React, {useContext} from "react";
 import { useHistory } from 'react-router-dom'
 import { ShoeContext } from './ShoeRouter'
 import ProgressBar from './ProgressBar'
 import { FaPlusCircle } from 'react-icons/fa'
+// import {format, isAfter, isBefore, isEqual} from 'date-fns'
 
 
 function DashboardLayout( ){
     let {shoes} = useContext(ShoeContext)
     const history = useHistory()
-    const [logs, setLogs] = useState()
-    
+
+    // TOTAL MILES
     let totalMiles =0 
     if(shoes){
         for(let i = 0; i < shoes.length; i++){
@@ -17,19 +18,17 @@ function DashboardLayout( ){
         }
     }
 
-    // week so far
-    // this is wrong!! 
-    let weekSoFar = 0
+    // week so far    
     let currentDay = new Date();
     let first = currentDay.getDate() - currentDay.getDay()
     let last = first + 6
-    let sunday = new Date(currentDay.setDate(first)).toUTCString()
-    let saturday = new Date(currentDay.setDate(last)).toUTCString()
-    currentDay = new Date().toUTCString()
-    console.log(`Current Date:    ${currentDay}`)
-    console.log(`Sunday:          ${sunday}`)
-    console.log(`Saturday:        ${saturday}`)
-
+    let sunday = new Date(currentDay.setDate(first))
+    let saturday = new Date(currentDay.setDate(last))
+    currentDay = new Date()
+    let weeklyMiles = 0
+    let logs = []
+    let weekSoFar = []
+    
     function getMileageLogs(shoeId){
           fetch(`api/mileEntries/${shoeId}`, {
             method: "GET",
@@ -37,21 +36,32 @@ function DashboardLayout( ){
               "Content-Type":"application/json"
             },
             credentials: 'same-origin',
-          }).then(response => response.json()
+          }).then(response => response.text()
           ).then((data) => {
-            data.map(d => {
-              let runDate = new Date(d.day_ran).toUTCString()
-              console.log(runDate)
-              if(runDate <= sunday && runDate >= saturday){
-                weekSoFar += d.today_miles
-              }
-            })
-            console.log(weekSoFar)
-          }).catch((err) =>{
+            setLogs(JSON.parse(data, (key, value) => {
+            const dateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:.*Z$/
+            if(typeof value === 'string' && dateFormat.test(value)){
+                return new Date(value)
+            }
+            return value
+            }))
+        }).then(() => {
+          for(let i = 0; i < logs.length; i++){
+            for(let j = 0; j < logs[i].length; j++){
+              let d = logs[i][j]
+              let runDate = new Date(d.day_ran)
+                  if(runDate <= saturday && runDate >= sunday){
+                    weeklyMiles += d.today_miles
+                  }
+            }
+          }
+        }).then(() => {
+          setWeeklyTotal(weeklyMiles)
+        })
+          .catch((err) =>{
             console.log(err)
           })
     }
-
 
     if(shoes){
       for(let i = 0; i < shoes.length; i++){
@@ -59,19 +69,29 @@ function DashboardLayout( ){
       }
     }
 
-    // Weekly Average
-    // math
-    let weeklyAverage = 0;
+    function setLogs(x){
+      logs.push(x)
+    }
+
+    let  weekTotal = 0
+    function setWeeklyTotal(t){
+        weekSoFar.push(t)
+        weekTotal = weekSoFar[weekSoFar.length - 1]
+        console.log(weekTotal)
+
+    }
+    console.log(weekTotal)
 
 
     let progressBars
     if(shoes){
+      if(shoes.length >= 1){
         progressBars = shoes.map(s => {return <ProgressBar key={s.id} shoe={s}/>})
-    }else{
+      }else{
         progressBars = <h3>Please add a shoe and start tracking! Your progress will be shown here.</h3>
+      }
     }
 
-    
     return (
       <div className="columns graphs">
           <div className="column is-3">
@@ -86,17 +106,17 @@ function DashboardLayout( ){
               <div className="container  main-content">
                 <div className="box has-text-centered">
                     <h3 className="is-size-4">Week so far</h3>
-                    <p className="totalMilesOnAppNum">{weekSoFar}</p>
+                    <p className="totalMilesOnAppNum">{weekTotal}</p>
 
                 </div>
               </div>
             
-              <div className="container  main-content">
+              {/* <div className="container  main-content">
                 <div className="box has-text-centered">
                     <h3 className="is-size-4">Weekly average</h3>
                     <p className="totalMilesOnAppNum">{weeklyAverage}</p>
                 </div>
-              </div>
+              </div> */}
             
           </div>
 

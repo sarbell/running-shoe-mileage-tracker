@@ -1,10 +1,17 @@
 import React, {useContext} from 'react'
 import { useHistory, useParams, Link } from 'react-router-dom'
 import { ShoeContext } from './ShoeRouter'
-import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa'
 import Nav from './Nav'
+import 'react-toastify/dist/ReactToastify.css'
+import "animate.css/animate.min.css";
+import { toast, cssTransition } from 'react-toastify'
+
+// https://animate.style/
+const bounce = cssTransition({
+    enter: "animate__animated animate__bounceIn",
+    exit: "animate__animated animate__bounceOut"
+  });
 
 
 
@@ -29,16 +36,18 @@ function ShoeSpec(){
                 },
                 credentials: 'same-origin',
             }).then(()=> {
-                toast('Sucessfully deleted!', {
+                toast.success('Sucessfully deleted!', {
                     onClose: () => {
                         document.location = "/dashboard"
-                    }
+                    },
+                    transition: bounce
                 })
             }).catch((error) => {
-                toast('Failed to delete!', {
+                toast.error('Failed to delete!', {
                     onClose: () => {
                         document.location = "/dashboard"
-                    }
+                    },
+                    transition: bounce
                 })
             })
         }

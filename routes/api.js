@@ -5,7 +5,7 @@ const Miles = require('../models/miles')
 const router = express.Router();
 const passport = require('passport')
 const jwt = require('jsonwebtoken');
-const APP_SECRET = "my_secret_for_this_app_which_needs_to_change_later"
+const APP_SECRET = process.env.APP_SECRET || "my_secret"
 
 
 function isLoggedIn(req){

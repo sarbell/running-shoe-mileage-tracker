@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const crypto = require('crypto')
 const jwt = require('jsonwebtoken') 
 const AUTH_TOKEN_EXPIRES_IN = 1 // days
-const APP_SECRET = "my_secret_for_this_app_which_needs_to_change_later"
+const APP_SECRET = process.env.APP_SECRET || "my_secret"
 
 const Schema = mongoose.Schema;
 const userSchema = new Schema({

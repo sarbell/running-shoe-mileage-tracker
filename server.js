@@ -1,3 +1,4 @@
+require("dotenv").config()
 const express = require('express');
 const mongoose = require('mongoose')
 const path = require('path');
@@ -15,7 +16,7 @@ app.use(passport.initialize())
 
 
 // Connect to the database
-mongoose.connect(process.env.MONGODB_URI|| 'mongodb://localhost:27017/sole-app', {
+mongoose.connect(process.env.MONGODB_URI|| 'mongodb://localhost/sole-app', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
