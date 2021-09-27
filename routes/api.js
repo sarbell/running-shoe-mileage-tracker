@@ -52,7 +52,7 @@ router.post('/api/register',  (req, res) => {
 
     newUser.save(err => {
         if(err){
-            res.join({success: false, message: "Unable to register User"})
+            res.status(404).json(err)
             res.end()
         }else{
             res.end()
