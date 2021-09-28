@@ -68,7 +68,7 @@ function Registration(){
     return (
         <section className="section register">
         <div className="container mt-5">
-            <div className="columns is-mobile">
+            <div className="columns is-three-quarters-mobile is-half-desktop">
                 <div className="column box is-half is-offset-one-quarter">
                     
                     <h1 className="title is-1 header-text">Registration</h1>

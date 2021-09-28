@@ -5,10 +5,12 @@ const path = require('path');
 const morgan = require('morgan')
 const app = express();
 const cookieParser = require('cookie-parser')
+// const history = require('connect-history-api-fallback')
 const passport = require('passport')
 const PORT = process.env.PORT || 3001;
 
 app.use(cookieParser())
+// app.use(history())
 // passport authentication
 const strategy = require('./passport')
 passport.use(strategy)
@@ -52,15 +54,15 @@ app.use('/', routes)
 app.use(cookieParser())
 
 
-// Server listening
-app.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`);
-});
-
 // All other GET requests not handled before will return our React app
 app.get('*', (req, res) => {
   const fullpath = path.join(__dirname, 'client', 'build', 'index.html')
   res.sendFile(fullpath);
+});
+
+// Server listening
+app.listen(PORT, () => {
+  console.log(`Server listening on ${PORT}`);
 });
 
 if (process.env.NODE_ENV === "production") {

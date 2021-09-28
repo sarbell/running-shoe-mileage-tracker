@@ -95,6 +95,15 @@ $menu-label-color: $info;
   height: 2px;
 }
 
+.customNavMenuBar{
+  .navbar-item,
+  .navbar-link{
+    color: $white !important;
+
+  }
+  background: $dark-grey-react !important;
+}
+
 .top-notification-bar{
   padding: 1rem;
   margin-top: 1rem;
@@ -106,7 +115,7 @@ $menu-label-color: $info;
   }
 }
 .red{
-  background-color: red;
+  background-color: red !important;
 }
 
 .main-dash{

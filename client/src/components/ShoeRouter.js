@@ -47,14 +47,12 @@ export default function ShoeRouter(){
                 <Route path="/login"><LoginForm /></Route>
                 <Route path="/register"><Registration /></Route>
                 <Route path="/about"><About /></Route>
-                <Route path="/dashboard"><Dashboard /></Route>
-                <Route path="/logout"><Logout /></Route>
-                <Route path="/add/shoe"><AddShoeForm></AddShoeForm></Route>
-                <Route path="/shoe/:sid/update"><AddShoeForm></AddShoeForm></Route>
-                <Route path="/shoe/addmiles/:sid"><AddMiles></AddMiles></Route>
-
-                <Route path="/shoe/:sid"><ShoeSpec></ShoeSpec></Route>
-
+                <Route path="/dashboard">{!authenticated ?<LoginForm /> : <Dashboard />}</Route>
+                <Route path="/logout">{!authenticated ?<LoginForm /> : <Logout />}</Route>
+                <Route path="/add/shoe">{!authenticated ?<LoginForm /> : <AddShoeForm></AddShoeForm>}</Route>
+                <Route path="/shoe/:sid/update">{!authenticated ?<LoginForm /> : <AddShoeForm></AddShoeForm>}</Route>
+                <Route path="/shoe/addmiles/:sid">{!authenticated ?<LoginForm /> : <AddMiles></AddMiles>}</Route>
+                <Route path="/shoe/:sid">{!authenticated ?<LoginForm /> : <ShoeSpec></ShoeSpec>}</Route>
                 <Redirect from="" to="/" />
             </Switch>
           </ShoeContext.Provider>

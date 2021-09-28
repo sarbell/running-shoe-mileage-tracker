@@ -85,9 +85,9 @@ function AddShoeForm(){
         <section className="shoeForm">
             <br/>
         <div className="container mt-5">
-            <div className="columns is-mobile">
-                <div className="column box is-half is-offset-one-quarter">
-                    
+            <div className="columns is-centered">
+                <div className="column box is-half-desktop is-full-mobile">
+                
                     <h1 className="title is-1 header-text">{is_new ? "Add Shoe" : "Edit Shoe"}</h1>
                     <form onSubmit={handleSubmit} className="shoeFormInput">
 

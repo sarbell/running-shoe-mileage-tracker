@@ -93,8 +93,8 @@ function AddMiles(){
         <section className="shoeForm">
             <br/>
         <div className="container mt-5">
-            <div className="columns is-mobile">
-                <div className="column box is-half is-offset-one-quarter">
+            <div className="columns is-centered">
+                <div className="column box is-full-mobile is-half-desktop is-offset-one-quarter">
                     
                     <h1 className="title is-1 header-text">Add Miles for Your Run with <strong>{shoe.nickname}</strong></h1>
                     <form onSubmit={handleSubmit} className="shoeAddFormInput">

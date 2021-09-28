@@ -107,7 +107,6 @@ function DashboardLayout( ){
                 <div className="box has-text-centered">
                     <h3 className="is-size-4">Week so far</h3>
                     <p className="totalMilesOnAppNum">{weekTotal}</p>
-
                 </div>
               </div>
             
