@@ -87,6 +87,7 @@ $menu-label-color: $info;
 }
 .customlink{
   cursor: pointer;
+  text-decoration: underline;
 }
 .line{
   background: linear-gradient(
@@ -207,5 +208,15 @@ $menu-label-color: $info;
     }
   }
 
+}
 
+form button, label{
+  font-size: 1.2rem !important;
+}
+
+.filterItem{
+  cursor: pointer;
+}
+.filterItem:hover{
+  background: $prettylightblue;
 }

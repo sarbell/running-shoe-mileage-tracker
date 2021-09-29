@@ -14,20 +14,23 @@ const bounce = cssTransition({
 
 
 function ValidationMessage({message}){
-    return <p className="help is-danger">{message}</p>
+    return <p className="help is-danger is-size-6">{message}</p>
 }
 
 const validationSchema = yup.object({
-    name: yup.string().required(),
-    username: yup.string().required(),
-    email: yup.string().email().required(),
-    password: yup.string().required()
+    name: yup.string().required('Please enter your full name'),
+    username: yup.string().required('Please enter your username'),
+    email: yup.string().email().required('Please enter a valid email'),
+    password: yup.string().required('Please enter a password for your account').matches(/^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+    "Password must contain at least 8 characters, one uppercase, one number and one special case character")
 })
 
 toast.configure()
 
 
 function Registration(){
+    const formBtn = document.querySelector('.submit')
+
     const {handleSubmit, handleChange, values, errors} = useFormik({
         initialValues: {
             name: "",
@@ -48,6 +51,7 @@ function Registration(){
                 if(!response.ok) throw Error('Failed to sign up')
                 return response.text()
             }).then(()=> {
+                formBtn.disabled = true
                 toast.success('Successfully Registered!', {
                     onClose: () => {
                         document.location = '/login'
@@ -55,6 +59,7 @@ function Registration(){
                     transition: bounce
                 })
             }).catch((error) => {
+                formBtn.disabled = true
                 toast.error(`Registration Failed!`, {
                     onClose: () => {
                         document.location = '/'
@@ -70,8 +75,8 @@ function Registration(){
         <div className="container mt-5">
             <div className="columns is-three-quarters-mobile is-half-desktop">
                 <div className="column box is-half is-offset-one-quarter">
-                    
-                    <h1 className="title is-1 header-text">Registration</h1>
+                    <button type="button" onClick={()=>document.location = '/'} className="button is-light is-pulled-right" >Cancel</button>
+                    <h1 className="title is-1 header-text">Registration </h1>
                     <form onSubmit={handleSubmit} className="registerInput">
                         <div className="field">
                             <label htmlFor="name"  className="label">Name</label>
@@ -80,6 +85,7 @@ function Registration(){
                                 <ValidationMessage message={errors.name} />
                             </div>
                         </div>
+                    <br></br>
                         
                         <div className="field">
                             <label htmlFor="username" className="label">Username</label>
@@ -89,6 +95,7 @@ function Registration(){
 
                             </div>
                         </div>
+                        <br></br>
 
                         <div className="field">
                             <label htmlFor="email" className="label">Email</label>
@@ -97,6 +104,7 @@ function Registration(){
                                 <ValidationMessage message={errors.email} />
                             </div>
                         </div>
+                        <br></br>
 
                         <div className="field">
                             <label  htmlFor="password" className="label">Password</label>
@@ -105,13 +113,11 @@ function Registration(){
                                 <ValidationMessage message={errors.password} />
                             </div>
                         </div>
+                        <br></br>
               
                         <div className="field is-grouped">
-                            <div className="control">
                             <br></br>
-                                <button type="submit" className="button is-success">Signup</button>
-                                <button type="button" onClick={()=>document.location = '/'} className="button is-light" >Cancel</button>
-                            </div>
+                                <button type="submit" className="submit button is-success is-fullwidth">Signup</button>
                         </div>
                     </form>
                 </div>

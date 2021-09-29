@@ -16,12 +16,12 @@ const bounce = cssTransition({
 
 
 function ValidationMessage({message}){
-    return <p className="help is-danger">{message}</p>
+    return <p className="help is-danger is-size-6">{message}</p>
 }
 
 const validationSchema = yup.object({
-    username: yup.string().required(),
-    password: yup.string().required()
+    username: yup.string().required("Please enter your username"),
+    password: yup.string().required("Please enter your password")
 })
 
 toast.configure()
@@ -29,6 +29,8 @@ toast.configure()
 
 function LoginForm(){
     const history = useHistory()
+
+    const formBtn = document.querySelector('.submit')
 
     const {handleSubmit, handleChange, values, errors} = useFormik({
         initialValues: {
@@ -48,6 +50,7 @@ function LoginForm(){
                 if(!response.ok) throw Error('Failed to log in')
                 return response.text()
             }).then(()=> {
+                formBtn.disabled = true
                 toast.success('Successfully logged in!', {
                     onClose: () => {
                         document.location = '/dashboard'
@@ -55,6 +58,7 @@ function LoginForm(){
                     transition: bounce
                 })
             }).catch((error) => {
+                formBtn.disabled = true
                 toast.error(`Login Failed!`, {
                     onClose: () => {
                         document.location = '/'
@@ -72,7 +76,9 @@ function LoginForm(){
             <div className="columns is-three-quarters-mobile is-half-desktop">
 
                 <div className="column box is-half is-offset-one-quarter">
-                    <h1 className="title is-1 header-text">Login</h1>
+                    <h1 className="title is-1 header-text">Login
+                    <button type="button" onClick={()=>document.location = '/'} className="button is-light is-pulled-right" to="/dashboard">Cancel</button>
+                    </h1>
                     <br></br>
                     <form onSubmit={handleSubmit} className="loginInput">
                         <div className="field">
@@ -82,6 +88,7 @@ function LoginForm(){
                                 <ValidationMessage message={errors.username} />
                             </div>
                         </div>
+                        <br></br>
 
                     <div className="field">
                         <label  htmlFor="password" className="label">Password</label>
@@ -91,18 +98,16 @@ function LoginForm(){
                         
                         </div>
                     </div>
+                    <br></br>
 
                     <div className="field is-grouped">
-                        <div className="control">
-                            <br></br>
-                            <button type="submit" className="button is-success">Login</button>
-                            <button type="button" onClick={()=>document.location = '/'} className="button is-light" to="/dashboard">Cancel</button>
-                        </div>
+                        <button type="submit" className="submit button is-fullwidth is-success mt-3">Login</button>
                     </div>
                     </form>
                     <br></br>
                     <hr className="line"></hr>
-                    <h2 onClick={()=>history.push('/register')} className="is-link title header-text is-3 customlink">Need to register?</h2>
+                    <h3 className="title header-text is-5">Don't have an account? <a onClick={()=>history.push('/register')} className=" is-link customlink">Register here</a></h3>
+                    
                 </div>
 
 

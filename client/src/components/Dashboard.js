@@ -20,6 +20,9 @@ function Dashboard(){
 
     let notifications = [] 
     if(shoes){  
+        shoes.sort((a, b) => (a.miles < b.miles) ? 1 : -1 )
+        shoes = shoes.filter(s => s.status === true)
+
         for(let i = 0; i < shoes.length; i++){
             let shoe = shoes[i]
             if(shoe.miles >= 250 && shoe.miles <= 350){

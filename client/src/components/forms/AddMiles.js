@@ -6,6 +6,8 @@ import * as yup from 'yup'
 import 'react-toastify/dist/ReactToastify.css'
 import "animate.css/animate.min.css";
 import { toast, cssTransition } from 'react-toastify'
+import Nav from '../Nav'
+
 
 // https://animate.style/
 const bounce = cssTransition({
@@ -14,12 +16,15 @@ const bounce = cssTransition({
   });
 
 function ValidationMessage({message}){
-    return <p className="help is-danger">{message}</p>
+    return <p className="help is-danger is-size-6">{message}</p>
 }
+
+const today = new Date()
+today.setHours(0,0,0,0)
 
 const validationSchema = yup.object({
     today_miles: yup.number().required('Please enter how many miles you run.').min(0),
-    day_ran: yup.date().required('Select the day of your run'),
+    day_ran: yup.date().required('Select the day of your run').max(today, 'Date cannot be in the future!'),
 })
 
 toast.configure()
@@ -30,6 +35,7 @@ function AddMiles(){
     let {sid} = useParams()
     let shoe = sid ? shoes.find(s => s.id === sid) : {}
 
+    const formBtn = document.querySelector('.submit')
 
     function addMilesToTotal(values){
         let value = shoe.miles + values.today_miles
@@ -46,11 +52,9 @@ function AddMiles(){
             return response.text()
         }).then(()=> {
             document.location = '/dashboard'
-
         }).catch((error) => {
             console.log(error)
             document.location = '/dashboard'
-
         })
     }
 
@@ -72,6 +76,7 @@ function AddMiles(){
                 if(!response.ok) throw Error('Failed to add miles')
                 return response.text()
             }).then(()=> {
+                formBtn.disabled = true
                 toast.success('Successfully submitted!', {
                     onClose: () => {
                         addMilesToTotal(values)
@@ -79,6 +84,7 @@ function AddMiles(){
                     transition: bounce
                 })
             }).catch((error) => {
+                formBtn.disabled = true
                 toast.error(`Action Failed!`, {
                     onClose: () => {
                         document.location = '/dashboard'
@@ -90,11 +96,13 @@ function AddMiles(){
     })
 
     return (
+        <>
+        <Nav></Nav>
         <section className="shoeForm">
             <br/>
         <div className="container mt-5">
             <div className="columns is-centered">
-                <div className="column box is-full-mobile is-half-desktop is-offset-one-quarter">
+                <div className="column box is-full-mobile is-half-desktop">
                     
                     <h1 className="title is-1 header-text">Add Miles for Your Run with <strong>{shoe.nickname}</strong></h1>
                     <form onSubmit={handleSubmit} className="shoeAddFormInput">
@@ -114,12 +122,10 @@ function AddMiles(){
                                 <ValidationMessage message={errors.day_ran} />
                             </div>
                         </div>
-              
+                         <br></br>
                         <div className="field is-grouped">
-                            <div className="control">
-                                <button type="submit" className="button is-success">Add</button>
-                                <button type="button" onClick={()=>document.location = '/dashboard'} className="button is-light" to="/dashboard">Cancel</button>
-                            </div>
+                            <button type="button" onClick={()=>document.location = '/dashboard'} className="button is-fullwidth is-light" to="/dashboard">Cancel</button>
+                                <button type="submit" className="submit  is-fullwidth button is-success">Add</button>
                         </div>
 
                     </form>
@@ -128,6 +134,7 @@ function AddMiles(){
             </div>
         </div>
         </section>
+        </>
     )
 }
 

@@ -6,6 +6,7 @@ import * as yup from 'yup'
 import 'react-toastify/dist/ReactToastify.css'
 import "animate.css/animate.min.css";
 import { toast, cssTransition } from 'react-toastify'
+import Nav from '../Nav'
 
 // https://animate.style/
 const bounce = cssTransition({
@@ -14,7 +15,7 @@ const bounce = cssTransition({
   });
 
 function ValidationMessage({message}){
-    return <p className="help is-danger">{message}</p>
+    return <p className="help is-danger is-size-6">{message}</p>
 }
 
 const validationSchema = yup.object({
@@ -38,6 +39,7 @@ function AddShoeForm(){
     let shoe = sid ? shoes.find(s => s.id === sid) : {}
     let is_new = sid === undefined
 
+    const formBtn = document.querySelector('.submit')
 
     const {handleSubmit, handleChange, values, errors} = useFormik({
         initialValues: is_new ? {
@@ -64,6 +66,7 @@ function AddShoeForm(){
                 if(!response.ok) throw Error('Failed to add shoe')
                 return response.text()
             }).then(()=> {
+                formBtn.disabled = true
                 toast.success('Successfully submitted!', {
                     onClose: () => {
                         document.location = '/dashboard'
@@ -71,6 +74,7 @@ function AddShoeForm(){
                     transition: bounce
                 })
             }).catch((error) => {
+                formBtn.disabled = true
                 toast.error(`Action Failed!`, {
                     onClose: () => {
                         document.location = '/dashboard'
@@ -82,13 +86,18 @@ function AddShoeForm(){
     })
 
     return (
+        <>
+        <Nav></Nav>
         <section className="shoeForm">
             <br/>
         <div className="container mt-5">
-            <div className="columns is-centered">
+            <div className="columns is-centered ">
                 <div className="column box is-half-desktop is-full-mobile">
                 
-                    <h1 className="title is-1 header-text">{is_new ? "Add Shoe" : "Edit Shoe"}</h1>
+                    <h1 className="title is-1 header-text">{is_new ? "Add Shoe" : "Edit Shoe"}
+                    <button type="button" onClick={()=>document.location = '/dashboard'} className="button is-light is-pulled-right" to="/dashboard">Cancel</button>
+                    
+                    </h1>
                     <form onSubmit={handleSubmit} className="shoeFormInput">
 
                         <div className="field">
@@ -157,7 +166,7 @@ function AddShoeForm(){
                         </div>
 
                         <div className="field">
-                            <label htmlFor="first_date" className="label">First Day the shoe was ran in</label>
+                            <label htmlFor="first_date" className="label">Date of first run in shoes</label>
                             <div className="control">
                                 <input id="first_date" name="first_date" className={`input form-control ${errors.first_date ? 'is-invalid' : ''}`} type="date" value={values.start_date} onChange={handleChange} />
                                 <ValidationMessage message={errors.first_date} />
@@ -171,13 +180,12 @@ function AddShoeForm(){
                                 <ValidationMessage message={errors.miles} />
                             </div>
                         </div>
-              
+                        <br></br>
+
                         <div className="field is-grouped">
-                            <div className="control">
-                                <button type="submit" className="button is-success">Set...Go!</button>
-                                <button type="button" onClick={()=>document.location = '/dashboard'} className="button is-light" to="/dashboard">Cancel</button>
-                            </div>
+                                <button type="submit" className="button submit is-success is-fullwidth">Set...Go!</button>
                         </div>
+                        <br></br>
 
                     </form>
                     
@@ -185,6 +193,7 @@ function AddShoeForm(){
             </div>
         </div>
         </section>
+        </>
     )
 }
 
